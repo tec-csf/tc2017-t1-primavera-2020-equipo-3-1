@@ -1,4 +1,4 @@
-# Tarea Tarea 1. Complejidad Computacional
+# Tarea 1. Complejidad Computacional
 
 ---
 
