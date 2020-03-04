@@ -1,5 +1,10 @@
-compiler: gcc
-language: cpp
-script: 
-  - g++ main.cpp -std=c++17 
-  - ./a.out -i Pruebas.txt
+matrix:
+  include:
+    -language: python
+    python: 3.6
+
+    -language: cpp
+    compiler: gcc
+    script: 
+      - g++ main.cpp -std=c++17 
+      - ./a.out -i Pruebas.txt
