@@ -2,3 +2,4 @@ compiler: gcc
 language: cpp
 script: 
   - g++ Analizador.cpp -std=c++17 
+  - ./a.out -i Pruebas.txt
