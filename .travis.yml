@@ -1,20 +1,23 @@
-language: python
-python:  
-  - 3.6
-before_install:
-  - sudo apt-get -y install python3.6
-  - sudo apt-get -y install python3.pip
-  - pip3 install symp
-  
-language: cpp
-compiler:
-  - gcc
-  - clang 
-os: linux
-before_install:
-  - sudo apt-get update 
-install: 
-  - bash
-script: 
-  - g++ Analizador.cpp
-  - ./a.out -i Pruebas.txt
+matrix:
+  include:
+    language: python
+    python:  
+      - 3.6
+    os: linux
+    before_install:
+      - sudo apt-get -y install python3.6
+      - sudo apt-get -y install python3.pip
+      - pip3 install symp
+    
+    language: cpp
+    compiler:
+      - gcc
+      - clang 
+    os: linux
+    before_install:
+      - sudo apt-get update 
+    install: 
+      - bash
+    script: 
+      - g++ Analizador.cpp
+      - ./a.out -i Pruebas.txt
