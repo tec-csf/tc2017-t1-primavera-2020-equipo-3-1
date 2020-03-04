@@ -9,11 +9,8 @@ matrix:
 
     - language: cpp
     compiler:
-        - gcc
-        - clang 
-      os: linux
-      before_script:
-        - bash
-      script:
-        - g++ Analizador.cpp
-        - ./a.out -i Pruebas.txt*/
+      - gcc
+      - clang 
+    script:
+      - g++ Analizador.cpp
+      - ./a.out -i Pruebas.txt*/
