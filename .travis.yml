@@ -3,12 +3,13 @@ compiler:
   - gcc
   - clang 
 os: linux
-install: 
-  - bash
+before_install:
   - apt-get update 
   - sudo apt install python3.6
   - sudo apt-get install python3.pip
   - pip3 install sympy
+install: 
+  - bash
 script: 
   - g++ Analizador.cpp
   - ./a.out -i Pruebas.txt
