@@ -10,10 +10,11 @@ int main()
     ifstream myfile;
     string aux;
     string cadena = "python polinomiosimp.py";
-    system("apt install python3.6");
-    system("apt-get install python3-pip");
+    system("sudo apt-get update")
+    system("sudo apt install python3.6");
+    system("sudo apt-get install python3-pip");
     system("pip3 install sympy");
-    system("python3 polinomiosimp.py 2*n**2+1+2*n**2+n**2");
+    system("python3 polinomiosimp.py 2*n*2+1+2*n2+n*2");
     myfile.open ("file.txt");
     if (myfile.is_open())
     {
