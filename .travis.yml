@@ -1,0 +1,12 @@
+language: cpp
+compiler:
+  - gcc
+  - clang 
+os: linux
+install:  
+  - apt install python3.6
+  - apt-get install python3.pip
+  - pip3 install sympy
+script: 
+  - g++ Analizador.cpp
+  - ./a.out -i Pruebas.txt

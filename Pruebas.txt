@@ -1,0 +1,53 @@
+gcc Exercise16.c -o ejercicio
+./ejercicio
+
+
+Formato de tabla
+Formato para ajustar lineas de codigo en celda
+Forma de eliminar lineas vacias o con corchetes
+Manejo de polinomios
+Buscar la manera de encontrar patrones
+Uso de queues
+
+
+9600
+S1>
+connect
+teltnet, terminal and traceroute
+telnet and terminal
+"Turn on privileged commands"
+enable
+Nothing due to the fact that there is more than 1 command with "te" as initial letters
+Instead of having S1>, it changes to S1#
+5, which are: clear, clock, configure, connect and copy
+Configuring from terminal, memory or network [terminal]? (terminal is the default option)
+Changes from S1# to S1(config)#, whcih is the global configuration mode
+% Incomplete command
+The option set to be used by the command
+The hh:mm:ss format for the clock 
+% Incomplete command
+Nothing
+% Incomplete command
+% Invalid output detected
+% Invalid output detected
+
+
+24
+2
+0-4 and 5-15
+starup-config
+The configuration have not been saved
+login is needed so the actual password is asked to the user every time he/she wants to access
+$1$mERr$ILwq/b7kc.7X/ejA4Aosn0
+It has been encrypted
+As plain text unless they are set as unable secret or the password-encryption service is repeated
+Before the user Access Verification is asked
+For legal purposes
+copy run start
+show startup-config
+Yes
+
+Witth 2 uses of exit and restarting the Line Interface
+No, as that IP has not been configured
+Enables VIRTUAL INTERFACE
+copy run start
