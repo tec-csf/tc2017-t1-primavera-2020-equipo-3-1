@@ -1,16 +1,16 @@
-matrix:
-  include:
-    - language: python
-      python: 3.6 
-      before_script:
-        - sudo apt-get -y install python3.6
-        - sudo apt-get -y install python3.pip
-        - pip3 install symp
-
-    - language: cpp
-    compiler:
-      - gcc
-      - clang 
-    script:
-      - g++ Analizador.cpp
-      - ./a.out -i Pruebas.txt*/
+matrix: 
+  include: 
+    - 
+      before_script: 
+        - "sudo apt-get -y install python3.6"
+        - "sudo apt-get -y install python3.pip"
+        - "pip3 install symp"
+      language: python
+      python: 3.6
+    - 
+      compiler: 
+        - gcc
+      language: cpp
+      script: 
+        - "g++ Analizador.cpp"
+        - "./a.out -i Pruebas.txt*/"
