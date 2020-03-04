@@ -10,7 +10,7 @@ int main()
     ifstream myfile;
     string aux;
     string cadena = "python polinomiosimp.py";
-    system("sudo apt-get update")
+    system("sudo apt-get update");
     system("sudo apt install python3.6");
     system("sudo apt-get install python3-pip");
     system("pip3 install sympy");
