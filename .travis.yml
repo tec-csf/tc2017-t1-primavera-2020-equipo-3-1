@@ -1,23 +1,31 @@
 matrix:
   include:
-    -language: python
-    python:  
-      - 3.6
-    os: linux
-    before_install:
-      - sudo apt-get -y install python3.6
-      - sudo apt-get -y install python3.pip
-      - pip3 install symp
-    
-    -language: cpp
-    compiler:
-      - gcc
-      - clang 
-    os: linux
-    before_install:
-      - sudo apt-get update 
-    install: 
-      - bash
-    script: 
-      - g++ Analizador.cpp
-      - ./a.out -i Pruebas.txt
+    - language: python
+      python: 2.7
+      before_script:
+        - cd backend/tests
+      script:
+        - python -m unittest discover
+
+    - language: android
+      dist: trusty
+      jdk: oraclejdk8
+      android:
+        components:
+          - tools
+          - android-25
+          - build-tools-25.0.3
+      before_script:
+        - cd android/AppName
+      script:
+        - ./gradlew build connectedCheck
+
+    - language: objective-c
+      os: osx
+      osx_image: xcode8.3
+      before_script:
+        - cd ios/AppName
+      script:
+        - xcodebuild -workspace AppName.xcworkspace -scheme AppName
+          -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3' build test
+
