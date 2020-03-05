@@ -1,4 +1,5 @@
 dist: bionic 
+packages: python-scipy
 compiler: gcc
 language: cpp
 script: 
