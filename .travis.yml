@@ -6,6 +6,7 @@ before_install:
 install:
   - sudo apt-get install python3-pip
   - pip3 install sympy
+  - sudo apt-get install python3-setuptools
 compiler: gcc
 language: cpp
 script: 
