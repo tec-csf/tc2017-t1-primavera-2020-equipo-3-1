@@ -15,7 +15,6 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
 
-  - conda activate test-environment
   - python setup.py install
 compiler: gcc
 language: cpp
