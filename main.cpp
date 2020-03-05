@@ -13,7 +13,7 @@ int main()
     system("sudo apt-get update");
     system("sudo apt-get install python3-pip3");
     system("pip install --user sympy");
-    system("python polinomiosimp.py 2*n**2 +2*n**2");
+    system("python polinomiosimp.py 2*n**2+2*n**2");
     myfile.open ("file.txt");
     if (myfile.is_open())
     {
