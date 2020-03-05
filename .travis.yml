@@ -1,10 +1,8 @@
-language: python
-python:
-  - 3.7
 before_install:
   - sudo apt-get update
   - pip install -U --user pip
   - pip3 install -U --user sympy
+  - sudo apt-get install python3.7
 install:
   - sudo apt-get install python3-pip
   - sudo apt-get install python3-setuptools
