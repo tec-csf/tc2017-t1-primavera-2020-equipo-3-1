@@ -2,7 +2,7 @@ language: python
 python:
   - 3.6
 before_install:
-  - apt-get update
+  - sudo apt-get update
 install:
   - apt-get install python3-pip
   - pip3 install sympy
