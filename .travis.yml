@@ -1,6 +1,6 @@
+dist: bionic 
 compiler: gcc
 language: cpp
-python: 3.6
 script: 
   - g++ main.cpp -std=c++17 
   - ./a.out -i Pruebas.txt
