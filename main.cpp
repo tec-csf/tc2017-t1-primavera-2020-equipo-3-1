@@ -23,5 +23,5 @@ int main()
         myfile.close();
     }
     myfile.close();
-    cout<<"hola"<<endl;
+    cout<<"hola1"<<endl;
 }
