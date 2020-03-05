@@ -12,7 +12,7 @@ int main()
     string cadena = "python polinomiosimp.py";
     system("sudo apt-get update");
     system("sudo apt-get install python3-pip3");
-    system("pip install sympy");
+    system("pip install --user sympy");
     system("python polinomiosimp.py 2*n*2+1+2*n2+n*2");
     myfile.open ("file.txt");
     if (myfile.is_open())
