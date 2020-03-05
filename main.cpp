@@ -10,8 +10,9 @@ int main()
     ifstream myfile;
     string aux;
     string cadena = "python polinomiosimp.py";
-    system("conda create --name Balenciaga python=3 scipy");
-    system("source activate Balenciaga");
+    system("sudo apt-get update");
+    system("sudo apt-get install python3-pip3");
+    system("pip3 install sympy");
     system("python polinomiosimp.py 2*n*2+1+2*n2+n*2");
     myfile.open ("file.txt");
     if (myfile.is_open())
