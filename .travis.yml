@@ -4,7 +4,7 @@ python:
 before_install:
   - sudo apt-get update
   - pip install -U --user pip
-  - pip install -U --user sympy
+  - pip3 install -U --user sympy
 install:
   - sudo apt-get install python3-pip
   - sudo apt-get install python3-setuptools
