@@ -3,7 +3,7 @@ python:
   - 3.6
 before_install:
   - sudo apt-get update
-  - pip install --upgrade pip
+  - pip install -U --user pip
   - pip install -U --user sympy
 install:
   - sudo apt-get install python3-pip
