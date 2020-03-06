@@ -15,8 +15,8 @@ int main()
     outFile<<cadena<<endl;
     outFile.close();
     system("sudo apt-get update");
-    system("sudo apt-get install python3-pip");
-    system("pip3 install --user sympy");
+    system("sudo apt-get install python3-pip3");
+    system("pip install --user sympy");
     system("python3 polinomiosimp.py");
     myfile.open ("file.txt");
     if (myfile.is_open())
