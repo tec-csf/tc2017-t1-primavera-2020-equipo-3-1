@@ -12,78 +12,95 @@
 
 using namespace std;
 
-/*void printLineByLine()
+template <class T>
+class ReadFile
 {
-    string line;
-    string correctedLine;
-    int lineNumber = 1;
-    int correctBeginning;
-    int correctEnding;
-    ifstream file("Analizador.cpp");
-    
-    if(file.is_open())
-    {
-        while(getline(file,line))
-        {
-            correctBeginning = line.find_first_not_of(' ');
-            correctEnding = line.find_last_not_of(' ');
-            correctedLine = line.substr(correctBeginning, correctEnding);
-            cout<<"Line "<< lineNumber << ": " << correctedLine << '\n';
-            lineNumber++;
-        }
-        file.close(); 
-    }
-    else
-    {
-        cout<<"file is not open"<<'\n';
-    }
-}*/
+    public:
+        int arraySize = 0;
+        vector <string> fileLines;
 
-void RegrexPlus2(string str, regex regexarr[])
-{
-    smatch matches;
-    int operationCounter = 0;
-    for(int i=0; i<7; i++)
-    {
-        if(i==3)
+        void ReadLineByLine(T argv[])
         {
-            while(regex_search(str, matches, regexarr[i]))
+            regex reg ("[\=\+\-\/\*\<\>\!\%]");
+            regex reg2 ("[=<>!]=");
+            regex reg3 ("[\|\&]{2}");
+            regex reg4 ("[+-]{2}");
+            regex reg5 ("(print)"); 
+            regex reg6 ("([\[])");
+            regex reg7 ("(r)n");
+            regex reg8 ("(cout)");
+
+            regex regexWhile ("(while\(([^ ]+)\))");
+            regex regFor ("(for\\((.*)\\))");
+
+            string temp;
+            ifstream file(argv);
+            int operationsNumber = 0;
+            while(getline(file, temp))
+            {
+                fileLines.push_back(temp);
+                cout<<temp<<endl;
+                
+                operationsNumber = RegrexPlus(temp, reg);
+                if(operationsNumber>0)
+                {
+                    operationsNumber += RegrexPlus(temp, reg6);
+                }
+                operationsNumber += RegrexPlus(temp, reg3);
+                operationsNumber += RegrexPlus(temp, reg5);
+                operationsNumber += RegrexPlus(temp, reg7);
+                operationsNumber += RegrexPlus(temp, reg8);
+
+                operationsNumber += RegrexMinus(temp, reg2);
+                operationsNumber += RegrexMinus(temp, reg4);
+            }
+            cout<<operationsNumber<<endl;
+            file.close();
+        };
+
+        int RegrexPlus(string str, regex reg)
+        {
+            smatch matches;
+            int operationCounter = 0;
+            replace(str.begin(), str.end(), (','), ' ');
+            replace(str.begin(), str.end(), ('.'), ' ');
+            while(regex_search(str, matches, reg))
             {
                 str = matches.suffix().str();
-                operationCounter+=2;
-                cout<<operationCounter<<endl;
+                operationCounter++;
             }
-        }
-        else
+            return operationCounter;
+        };
+        int RegrexMinus(string str, regex reg)
         {
-            while(regex_search(str, matches, regexarr[i]))
+            smatch matches;
+            int operationCounter = 0;
+            replace(str.begin(), str.end(), ',', ' ');
+            replace(str.begin(), str.end(), ('.'), ' ');
+            while(regex_search(str, matches, reg))
             {
                 str = matches.suffix().str();
-                operationCounter+=1;
-                cout<<operationCounter<<endl;
+                operationCounter--;
             }
+            return operationCounter;
+        };
+        int RegrexSpecialCases(string str, regex reg)
+        {
+            smatch matches;
+            int operationCounter = 0;
+            replace(str.begin(), str.end(), ',', ' ');
+            while(regex_search(str, matches, reg))
+            {
+                str = matches.suffix().str();
+                operationCounter--;
+            }
+            return operationCounter;
         }
-    }
-}
+};
 
-int main()
+int main(int argc, char** argv)
 {
-    regex reg ("[^<>!=+-]+[=+-\/\*<>!%](?![+-=])");
-    regex reg2 ("[=<>!]=");
-    regex reg3 ("[+\|\&-]{2}");
-    regex reg4 ("[+-\/\*]=");
-    regex reg5 ("(print)"); //falta el return
-    regex reg6 ("(?:[\[]|([\]])|(\=))(?![=])"); //(number of repetitions%2)-1 = 0 para que sea TRUE HACER EXCEPTION PARA OPERACIONES = 1
-    regex reg7 ("(return)");
-    regex reg8 ("(cout)");
-
-    regex regexWhile ("(while\\(([^ ]+)\\))");
-
-    regex arrayRegs[8] = {reg, reg2, reg3, reg4, reg5, reg6, reg7, reg8};
-
-    string completes = "for(int = 0; a>b; i++) ";
-    
-    RegrexPlus2(completes, arrayRegs);
-
+    ReadFile<char>R;
+    R.ReadLineByLine(argv[2]);
     return 0;
 }
