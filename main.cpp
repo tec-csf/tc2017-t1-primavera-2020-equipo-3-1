@@ -16,7 +16,7 @@ int main()
     outFile.close();
     system("sudo apt-get update");
     system("sudo apt-get install python3-pip3");
-    system("pip3 install --user sympy");
+    system("pip install --user sympy");
     system("python polinomiosimp.py");
     myfile.open ("file.txt");
     if (myfile.is_open())
