@@ -30,17 +30,20 @@ class ReadFile
             regex reg7 ("(r)n");
             regex reg8 ("(cout)");
 
-            regex regexWhile ("(while\(([^ ]+)\))");
-            regex regFor ("(for\\((.*)\\))");
-
+            regex regWhile ("(while\\((.*)\\))");
+            regex regFor("(for\\((.*)\\))");
+            
             string temp;
             ifstream file(argv);
             int operationsNumber = 0;
             while(getline(file, temp))
             {
                 fileLines.push_back(temp);
-                cout<<temp<<endl;
-                
+                //cout<<temp<<endl;
+
+                PrintMatches(temp, regWhile);
+                PrintMatches(temp, regFor);
+
                 operationsNumber = RegrexPlus(temp, reg);
                 if(operationsNumber>0)
                 {
@@ -53,8 +56,9 @@ class ReadFile
 
                 operationsNumber += RegrexMinus(temp, reg2);
                 operationsNumber += RegrexMinus(temp, reg4);
+
+                cout<<operationsNumber<<endl;
             }
-            cout<<operationsNumber<<endl;
             file.close();
         };
 
@@ -84,17 +88,52 @@ class ReadFile
             }
             return operationCounter;
         };
-        int RegrexSpecialCases(string str, regex reg)
+        void checkcharacters(string evaluar)
         {
-            smatch matches;
-            int operationCounter = 0;
-            replace(str.begin(), str.end(), ',', ' ');
-            while(regex_search(str, matches, reg))
+            string aux="";
+            int cont=4;
+            int number;
+            for(int i=4;i<evaluar.length();i++)
             {
-                str = matches.suffix().str();
-                operationCounter--;
+                if(evaluar.at(i)==';')
+                {
+                    number=i-cont;
+                    aux=evaluar.substr(cont, number);
+                    cout<<aux<<endl;
+                    cont=i+1;
+                }
             }
-            return operationCounter;
+            number=evaluar.length()-1-cont;
+            cout<<evaluar.substr(cont,number)<<endl;  
+        }
+        void checkWhile(string keyword)
+        {
+            string aux;
+            aux = keyword.substr(6,keyword.length()-7);
+            cout<<aux<<endl;
+        }
+        void PrintMatches(string str,regex reg)
+        {    
+            // Used when your searching a string
+            smatch matches;
+            strin g aux=" ";
+            // Show true and false in output
+            
+            // Determines if there is a match and match 
+            // results are returned in matches
+            while(regex_search(str, matches, reg)){
+                // Get the first match
+            cout << matches.str(0) << "\n";
+            checkcharacters(matches.str(0));
+            checkWhile(matches.str(0));
+            
+                // Eliminate the previous match and create
+                // a new string to search
+                //cout<<aux<<endl;
+                str = matches.suffix().str();
+                //cout<<str<<endl;
+                cout << "\n";
+            }
         }
 };
 
