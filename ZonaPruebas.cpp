@@ -19,6 +19,8 @@ class Pruebas
         smatch matches;
         vector <tuple<N,C,O,P>> info;
         string regexOE[9] = {"[\=\+\-\/\*\<\>\!\%]", "[=<>!]=", "[\|\&]{2}", "[+-]{2}", "(print)", "([\[])", "(return)", "(cout)", "(:)"};
+        string forgElements[3];
+        string forgElements2[3];
         void ReadFileLineLine(char argv[])
         {
             string lineAnalyzed;
@@ -26,8 +28,11 @@ class Pruebas
             int numberLine = 1;
             while(getline(file, lineAnalyzed))
             {
+                if(lineAnalyzed.at(0)=='f')
+                {
+                    RegFor(lineAnalyzed);
+                }
                 info.push_back(make_tuple(numberLine,lineAnalyzed,RegOE(lineAnalyzed),"n+2"));
-                //RegFor(lineAnalyzed);
                 numberLine++;
             }
             for(const auto & i : info) 
@@ -71,29 +76,44 @@ class Pruebas
             }
             return operationCounter;
         }
-        bool RegFor(string str)
+        void RegFor(string str)
         {
+            regex regFor("(for[ ]?\\((.*)\\))");
             string poly;
-            string *tempForElements;
-            regex regFor("(for\\((.*)\\))");
             replace(str.begin(), str.end(), (','), ' ');
             replace(str.begin(), str.end(), ('.'), ' ');
-            while(regex_search(str, matches, regFor))
+            if(regex_search(str, matches, regFor))
             {
-                tempForElements = RegForAux(matches.str(0));
-                str = matches.suffix().str();
+                RegForAux(str);  
             }
+            checkTimes(forgElements);
             for(int i = 0; i<3; i++)
             {
                 char temp[10];
-                sprintf(temp, "%d", RegOE(*(tempForElements+i)));
-                poly = poly + strcat(temp,"+");
+                if(i==0)
+                {
+                    poly = poly + to_string(RegOE(forgElements[i])) +strcat(temp,"+");
+                }
+                else if (i==1)
+                {
+                    poly = poly + to_string(RegOE(forgElements[i]))+"*"+"(" + forgElements2[1]+ "+ 1" + " -" +"("+forgElements2[0]+")" +")"+ "+";
+                }
+                else
+                {
+                    if(forgElements2[2]=="log")
+                    {
+                        poly = "w*";
+                    }
+                    else
+                    {
+                        poly = poly + to_string(RegOE(forgElements[i]))+ "*" + (forgElements2[2]) +"*"+"("+forgElements2[1]+"-"+"("+forgElements2[0]+")"+")";
+                    }  
+                }
                 cout<<poly<<endl;
             }
         }
-        string * RegForAux(string str)
+        void RegForAux(string str)
         {
-            static string forElements[3];
             string aux="";
             int arrayCounter = 0;
             
@@ -107,20 +127,63 @@ class Pruebas
                 {
                     number=i-cont;
                     aux=str.substr(cont, number);
-                    correctBeginning = aux.find_first_not_of(' ');
+                    correctBeginning = aux.find_first_not_of(' ') || aux.find_first_not_of('(');
                     aux = aux.substr(correctBeginning, number);
-                    forElements[arrayCounter] = aux;
+                    forgElements[arrayCounter] = aux;
+
+                    //cout<<forgElements[arrayCounter]<<endl;
+
                     arrayCounter++;
                     cont=i+1;
                 }
             }
-            number=str.length()-1-cont;
+            number=str.length()-2-cont;
             aux = str.substr(cont,number);  
             correctBeginning = aux.find_first_not_of(' ');
             aux = aux.substr(correctBeginning, number);
-            forElements[2] = aux;
-
-            return forElements;
+            forgElements[2] = aux;
+            //cout<<forgElements[2]<<endl;
+        }
+        void checkTimes(string vect[3])
+        {
+            string aux="";
+            for(int i=0;i<3;i++)
+            {
+                for(int j=0;j<vect[i].length();j++)
+                {
+                    if((vect[i].at(j)=='+'&& vect[i].at(j+1)=='=')||(vect[i].at(j)=='-'&& vect[i].at(j+1)=='='))
+                    {
+                        aux=vect[i].substr(j+2,vect[i].length()-j);
+                        aux="1/"+aux;
+                        //cout<<aux<<endl;
+                        j=j+1;
+                    }
+                    else if((vect[i].at(j)=='/'&& vect[i].at(j+1)=='=')||(vect[i].at(j)=='*'&& vect[i].at(j+1)=='='))
+                    {
+                        aux="log";
+                        //cout<<aux<<endl;
+                        j=j+1;
+                    }
+                    else if((vect[i].at(j)=='<'&& vect[i].at(j+1)=='=')||(vect[i].at(j)=='>'&& vect[i].at(j+1)=='='))
+                    {
+                        aux=vect[i].substr(j+2,vect[i].length()-j);
+                        //cout<<aux<<endl;
+                        j=j+1;
+                    }
+                    else if(vect[i].at(j)=='='||vect[i].at(j)=='<'||vect[i].at(j)=='>')
+                    {
+                        aux=vect[i].substr(j+1,vect[i].length()-j);
+                        //cout<<aux<<endl;
+                    }
+                    else if((vect[i].at(j)=='+'&& vect[i].at(j+1)=='+')||(vect[i].at(j)=='-'&& vect[i].at(j+1)=='-'))
+                    {
+                        aux="1";
+                        //cout<<aux<<endl;
+                        j++;
+                    }
+                    forgElements2[i]=aux;
+                }
+            }
         }
 };
 
