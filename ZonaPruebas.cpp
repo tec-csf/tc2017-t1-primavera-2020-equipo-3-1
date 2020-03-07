@@ -18,7 +18,7 @@ class Pruebas
     public:
         smatch matches;
         vector <tuple<N,C,O,P>> info;
-        string regexOE[8] = {"[\=\+\-\/\*\<\>\!\%]", "[=<>!]=", "[\|\&]{2}", "[+-]{2}", "(print)", "([\[])", "(return)", "(cout)"};
+        string regexOE[9] = {"[\=\+\-\/\*\<\>\!\%]", "[=<>!]=", "[\|\&]{2}", "[+-]{2}", "(print)", "([\[])", "(return)", "(cout)", "(:)"};
         void ReadFileLineLine(char argv[])
         {
             string lineAnalyzed;
@@ -27,10 +27,10 @@ class Pruebas
             while(getline(file, lineAnalyzed))
             {
                 info.push_back(make_tuple(numberLine,lineAnalyzed,RegOE(lineAnalyzed),"n+2"));
-                RegFor(lineAnalyzed);
+                //RegFor(lineAnalyzed);
                 numberLine++;
             }
-            for (const auto & i : info) 
+            for(const auto & i : info) 
             {
                 cout <<get<0>(i)<<" "<<get<2>(i)<<endl;
                 //cout <<get<2>(i)<<" "<<get<3>(i)<<endl;
@@ -42,7 +42,7 @@ class Pruebas
             replace(str.begin(), str.end(), (','), ' ');
             replace(str.begin(), str.end(), ('.'), ' ');
             int temp=0;
-            for(int i = 0; i<8; i++)
+            for(int i = 0; i<9; i++)
             {
                 operationCounter += RegOEAux(i, str, matches, regex(regexOE[i]));
             }
@@ -57,6 +57,11 @@ class Pruebas
                 {
                     str = matches.suffix().str();
                     operationCounter--;
+                }
+                else if(index == 8)
+                {
+                    str = matches.suffix().str();  
+                    operationCounter+=2;  
                 }
                 else
                 {
@@ -80,7 +85,6 @@ class Pruebas
             }
             for(int i = 0; i<3; i++)
             {
-                //poly = poly.append(RegOE(*(tempForElements+i)).append("+"));
                 char temp[10];
                 sprintf(temp, "%d", RegOE(*(tempForElements+i)));
                 poly = poly + strcat(temp,"+");
