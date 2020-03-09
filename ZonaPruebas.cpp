@@ -28,6 +28,7 @@
 #include <ctime>
 #include <numeric>
 #include <cmath>
+#include <iomanip>
 
 using namespace std;
 
@@ -35,82 +36,108 @@ template <class N, class C, class O, class P>
 class Pruebas
 {
     public:
-        stack<string> multiplicators;
-        stack<string> temporalPolys;
         smatch matches;
         vector <tuple<N,C,O,P>> info;
+        vector <string> lines;
         string regexOE[9] = {"[\=\+\-\/\*\<\>\!\%]", "[=<>!]=", "[\|\&]{2}", "[+-]{2}", "(print)", "([\[])", "(return)", "(cout)", "(:)"};
         string forgElements[3];
         string forgElements2[3];
         string polynomLineAanalyzed;
-        string multiplicator = "";
         string tempMultiplicator = "";
-        string concatPolynomial;
+        string concatPolynomial = "";
+        string finalPolunomial = "";
+        
+        /**
+         * This method reads the file specified by the user to be analyzed and saves each line as an
+         * element of a vector made up strings
+         * 
+         * @param argv is an array of c-string pointers, from which the file (name or path) is extracted
+         *     to be found.
+         * 
+         * @note This method is perfored before the actual analysis of the code and its operations. It is
+         *      done so further analysis focused on the if, else and while structures can be done easily.
+         * @note The vector in which the line are saved is declared with a global scope inside the class.
+         * 
+         */ 
+        void SaveLinesIntoVector(char argv[])
+        {
+            ifstream reader(argv);
+            string lineToBeSaved;
+            int counter = 0;
+            while(getline(reader, lineToBeSaved))
+            {
+                lines.push_back(lineToBeSaved);   
+                counter++;
+            }
+        }
         void ReadFileLineLine(char argv[])
         {
+            int flag = 0;
             string lineAnalyzed;
             ifstream file(argv);
             int numberLine = 1;
             bool Open= false;
             bool Close = false;
+            regex regFor("((.*)?\\})");
+            regex regFor2("((.*)?\\{)");
+            //rege
             while(getline(file, lineAnalyzed))
             {
+                if(lineAnalyzed.find("else if") != std::string::npos)
+                {
+                    cout<<"ELSE IF"<<endl;
+                    checkBrackets(numberLine);
+                }
+                else if(lineAnalyzed.find("if") != std::string::npos)
+                {
+                    cout<<"IF"<<endl;
+                    checkBrackets(numberLine);
+                }  
+                else if(lineAnalyzed.find("else") != std::string::npos)
+                {
+                    cout<<"ELSE"<<endl;
+                    checkBrackets(numberLine);
+                }  
                 if(lineAnalyzed.find("for") != std::string::npos)
                 {
                     RegFor(lineAnalyzed);
+                    polynomLineAanalyzed= polynomLineAanalyzed + "*" + forgElements2[2] + "*";
                 }
                 else
                 {
                     polynomLineAanalyzed = to_string(RegOE(lineAnalyzed));
                 }
-                if(Open == true && Close == false  && lineAnalyzed.find("}") == std::string::npos )
+                if(regex_search(lineAnalyzed, matches, regFor2) && flag==0)
                 {
-                    concatPolynomial = polynomLineAanalyzed + " +" + concatPolynomial;
-                    cout<<concatPolynomial<<endl;
+                    flag++;
+                    finalPolunomial = finalPolunomial + "+1*(";
                 }
-                if(lineAnalyzed.find("{") != std::string::npos)
+                else if(regex_search(lineAnalyzed, matches, regFor2) && flag!=0)
                 {
-                    multiplicator = tempMultiplicator;
-                    //cout<<concatPolynomial<<endl;
-                    if(multiplicators.empty())
-                    {
-                        Open = true;
-                        multiplicators.push(multiplicator);
-                    }
-                    else
-                    {
-                        multiplicators.push(multiplicator);
-                        temporalPolys.push(concatPolynomial);
-                        concatPolynomial = ""; 
-                    }
+                    finalPolunomial = finalPolunomial + "1*(";
                 }
-                if(lineAnalyzed.find("}") != std::string::npos)
+                
+                if(regex_search(lineAnalyzed, matches, regFor))
                 {
-                    cout<<multiplicators.top()<<endl;
-                    Close = true;
-                    concatPolynomial = "("+multiplicator+")"+"*"+"("+concatPolynomial+"0"")";
-                    //cout<<concatPolynomial<<endl;
-                    //string w = multiplicators.top();
-                    //cout << w <<endl;
-                    multiplicators.pop();
-                    if(!multiplicators.empty())  
-                    {
-                        multiplicator = multiplicators.top();
-                        concatPolynomial = temporalPolys.top() + multiplicator +"*(" + concatPolynomial;
-                    }
-                    else
-                    {
-                        //concatPolynomial = temporalPolys.top() + multiplicator +"*(" + concatPolynomial;
-                    }
+                    finalPolunomial = finalPolunomial + ")";
                 }
-                //Open = false;
+                else
+                {
+                    finalPolunomial = finalPolunomial + "+" + polynomLineAanalyzed;
+                    //cout<<finalPolunomial<<endl;
+                }
                 info.push_back(make_tuple(numberLine,lineAnalyzed,RegOE(lineAnalyzed),polynomLineAanalyzed));
                 numberLine++;
             }
+            finalPolunomial = finalPolunomial;
+            //cout<<finalPolunomial<<endl;
+            //cout<< setw(2)<< "|No. de linea| " << setw(64)<< "|Código|" << setw(45) << "|OE|" << setw(15)<< "|Polinomio|" << endl;
             for(const auto & i : info) 
             {
-                cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
-                cout <<get<2>(i)<<" "<<get<3>(i)<<endl;
+                //cout<<"|"<< get<0>(i) << setw(10) << get<1>(i) << setw(4)<<endl << get<2>(i) << setw(10)<< get<3>(i)<<"|" <<endl;
+                //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
+                //cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
+                //cout <<get<2>(i)<<" "<<get<3>(i)<<endl;
             }
         }
 
@@ -301,6 +328,28 @@ class Pruebas
                 }
             }
         }
+        void checkBrackets(int lineNumber)
+        {
+            //string vect[6]={value1,value2,value3,value4,value5,value6};
+            int contLI=0, contLC=0, cont=0;
+            for(int i=lineNumber;i<lines.size();i++)
+            {
+                if(lines.at(i).find("{") != std::string::npos)
+                {
+                    contLI++;
+                }
+                else if(lines.at(i).find("}") != std::string::npos)
+                {
+                    contLC++;
+                }
+                cont++;
+                if(contLC==contLI&&(contLC!=0&&contLI!=0))
+                {
+                    break;
+                }
+            }
+            cout<<cont<<endl;
+        }
 };
 
 /**
@@ -321,6 +370,7 @@ class Pruebas
 int main(int argc, char** argv)
 {
     Pruebas<int,string,int,string>P;
+    P.SaveLinesIntoVector(argv[2]);
     P.ReadFileLineLine(argv[2]);
     return 0;
 }
