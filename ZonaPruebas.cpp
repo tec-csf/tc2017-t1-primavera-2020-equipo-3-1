@@ -61,7 +61,7 @@ class Pruebas
         {
             system("sudo apt-get update");
             system("sudo apt-get install python3-pip");
-            system("pip install --user sympy");
+            system("pip3 install --user sympy");
         }
 
         /**
@@ -211,27 +211,28 @@ class Pruebas
                     finalPolunomial = finalPolunomial + "+" + polynomLineAanalyzed;
                     //cout<<finalPolunomial<<endl;
                 }
-                info.push_back(make_tuple(numberLine,lineAnalyzed,RegOE(lineAnalyzed),lineTableFor));
+                cout<<lineAnalyzed.find_first_not_of('\t')<<endl;
+                info.push_back(make_tuple(numberLine,lineAnalyzed.substr(lineAnalyzed.find_first_not_of('\t'), lineAnalyzed.size()),RegOE(lineAnalyzed),lineTableFor));
                 numberLine++;
             }
-            //finalPolunomial = finalPolunomial;
-            //cout<< setw(2)<< "|No. de linea| " << setw(40)<< "|Código|" << setw(45) << "|OE|" << setw(50)<< "|Polinomio|" << endl;
-            cout<<"--------------------------------------------------------------------------------------------------------------------------------"<<endl;
-            cout<< setw(2)<< "|No. de linea| " << setw(49)<< "Código" << setw(40) << "|OE|" << setw(16)<<"Polinomio"<<setw(9)<<"|" << endl; 
             cout<<"--------------------------------------------------------------------------------------------------------------------------------"<<endl;
             for(const auto & i : info) 
             {
-                string temp = get<3>(i);
-                temp= SendToPython(temp);
-                cout<<"|"<< get<0>(i) << setw(90) << get<1>(i)<< setw(8) <<"|"<< get<2>(i) <<" |"<< setw(24)<< temp<<"|" <<endl;
-                //cout<<"|"<<setw(1)<<get<1>(i)<<setw(50)<<get<2>(i)<<setw(60) << get<3>(i)<< setw(8)<< get<0>(i)<<"|" <<endl;
-                //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
-                
-                //cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
-                //cout <<get<2>(i)<<" "<<temp<<endl;
+                int numberLine = get<0>(i);
+                string codeLine = get<1>(i);
+                codeLine = codeLine.substr(correctBegginig, codeLine.length());
+                int OEcount = get<2>(i);
+                string tempPoly = get<3>(i);
+                tempPoly= SendToPython(tempPoly);
+
+                string tablePart1 = "Numero de linea siendo analizada: "+to_string(numberLine)+ "         |        " + "Codigo contenido en dicha linea: "+ codeLine;
+                string tablePart2 = "Numero de Operaciones Elementales : "+ to_string(OEcount)+ "               " + " Polinomio: "+ tempPoly;
+                cout<<tablePart1<<endl;
+                cout<<tablePart2<<endl;
+                cout<<"\n"<<endl;
             }
-            //cout<<finalPolunomial<<endl;
-            //cout<<SendToPython(finalPolunomial)<<endl;
+            string fP = SendToPython(finalPolunomial);
+            cout<<CotaAsin(fP)<<endl;
         }
 
         /**
@@ -497,6 +498,61 @@ class Pruebas
                 }
             }
             //cout<<cont<<endl;
+        }
+        string CotaAsin(string value)
+        {
+            int cont=0;
+            smatch matches;
+            char aux='0',logarit='0';
+            string cot="";
+            int band=0;
+            regex regw("(w)");
+            regex regPot("([\\*]\\*)");
+            string Polipot = regex_replace(value,regPot,"^");
+            for(int i=0;i<Polipot.length();i++)
+            {
+                if(Polipot.at(i)=='n')
+                {
+                    if(Polipot.at(i+1)=='^')
+                    {
+                    aux=Polipot.at(i+2);
+                    i=i+2;
+                    }
+                    else
+                    {
+                        if('1'>=aux)
+                        {
+                            aux='1';
+                        }
+                    }
+                }
+                else if(Polipot.at(i)=='w')
+                {
+                    band=1;
+                    logarit=aux;
+                }
+            }
+            if(band==1&&aux=='0')
+            {
+                cot="log n";
+            }
+            else if(aux>logarit)
+            {
+                string s(1, aux);
+                cot="n^"+ s;
+            }
+            else if(aux<=logarit)
+            {
+                string s(1, logarit);
+                cot="n^"+ s+ " log n";
+            }
+            else if(aux=='0')
+            {
+                cot="C";
+            }
+            string FinalPol= regex_replace(Polipot,regw,"log");
+            cout<<"Cota Asintotica: O("<<cot<<")"<<endl;
+            return "Polinomio del codigo analizado: T(n) = " + FinalPol;   
         }
 };
 
