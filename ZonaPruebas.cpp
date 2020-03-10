@@ -222,7 +222,7 @@ class Pruebas
             for(const auto & i : info) 
             {
                 string temp = get<3>(i);
-                temp= SendToPython(temp);
+                //temp= SendToPython(temp);
                 cout<<"|"<< get<0>(i) << setw(90) << get<1>(i)<< setw(8) <<"|"<< get<2>(i) <<" |"<< setw(24)<< temp<<"|" <<endl;
                 //cout<<"|"<<setw(1)<<get<1>(i)<<setw(50)<<get<2>(i)<<setw(60) << get<3>(i)<< setw(8)<< get<0>(i)<<"|" <<endl;
                 //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
