@@ -1,6 +1,7 @@
 compiler: gcc
 language: cpp
+
 script:
-  - ls
-  - g++ ZonaPruebas.cpp -std=c++17 
-  - ./a.out -i ../examples/Pruebas.txt
+  - g++ ZonaPruebas.cpp -std=c++17
+  - cd examples
+  - ./a.out -i Pruebas.txt
