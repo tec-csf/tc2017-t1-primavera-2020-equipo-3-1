@@ -47,26 +47,37 @@ class Pruebas
         string tempMultiplicator = "";
         string concatPolynomial = "";
         string finalPolunomial = "";
-        
+
         /**
-         * This method reads the file specified by the user to be analyzed and saves each line as an
-         * element of a vector made up strings
+         * This method was created so the necessary installations regarding python and pip can be performed
+         * in order to be able to simplify the polynomials presented by this Complexity Analyzer.
          * 
-         * @param argv is an array of c-string pointers, from which the file (name or path) is extracted
-         *     to be found.
-         * 
-         * @note This method is perfored before the actual analysis of the code and its operations. It is
-         *      done so further analysis focused on the if, else and while structures can be done easily.
-         * @note The vector in which the line are saved is declared with a global scope inside the class.
+         * @note No parameters and no return values are expetec by this method.
+         * @note Contain the lines of text that the command line (either in Travis or in a physical machine)
+         *      will have to execute to set up Python for a correct performance of this program.
          * 
          */
-
         void InstallPython()
         {
             system("sudo apt-get update");
             system("sudo apt-get install python3-pip");
             system("pip3 install sympy");
         }
+
+        /**
+         * This method sends each polynomial created or developed by this program to be analyzed, solved and
+         * reduced by the Python file "polinomiosimp.py"
+         * 
+         * @param poly is the line (defined as a string datatype) that will be sent to the Python file
+         *      aforementioned to be analyzed,
+         * 
+         * @return returns the polynomial (may be with constant, lineal or any other complexity) in a simplified 
+         *      and clear way so the final user can understand it.  
+         * 
+         * @note In order to achieve this analysis, each line has to be saved in a .txt file that will be loaded
+         *      in its propper time by the Python file to be analyzed and simplified.
+         * 
+         */
         string SendToPython(string poly)
         {
             string line;
@@ -88,6 +99,19 @@ class Pruebas
             myfile.close();
             return aux;
         }
+
+        /**
+         * This method reads the file specified by the user to be analyzed and saves each line as an
+         * element of a vector made up strings
+         * 
+         * @param argv is an array of c-string pointers, from which the file (name or path) is extracted
+         *     to be found.
+         * 
+         * @note This method is perfored before the actual analysis of the code and its operations. It is
+         *      done so further analysis focused on the if, else and while structures can be done easily.
+         * @note The vector in which the line are saved is declared with a global scope inside the class.
+         * 
+         */
         void SaveLinesIntoVector(char argv[])
         {
             ifstream reader(argv);
@@ -95,7 +119,7 @@ class Pruebas
             int counter = 0;
             while(getline(reader, lineToBeSaved))
             {
-                if(lineToBeSaved.find("=") != std::string::npos)
+                if(lineToBeSaved.find("=") != std::string::npos || lineToBeSaved.find("++") != std::string::npos || lineToBeSaved.find("--") != std::string::npos)
                 {
                     variableAssignations.push_back(lineToBeSaved);
                 }
@@ -107,47 +131,54 @@ class Pruebas
                 cout<<i<<endl;
             }
         }
+
         void ReadFileLineLine(char argv[])
         {
             int flag = 0;
             string lineAnalyzed;
             string lineTableFor;
+            string variableToSearch;
             ifstream file(argv);
             int numberLine = 1;
-            bool Open= false;
-            bool Close = false;
             regex regFor("((.*)?\\})");
             regex regFor2("((.*)?\\{)");
             regex regWhile("(while[ ]?\\((.*)\\))");
-            //rege
             while(getline(file, lineAnalyzed))
             {
                 if(lineAnalyzed.find("else if") != std::string::npos)
                 {
-                    //cout<<"ELSE IF"<<endl;
-                    checkBrackets(numberLine);
+                    checkBrackets(numberLine, variableToSearch);
                 }
                 else if(lineAnalyzed.find("if") != std::string::npos)
                 {
-                    //cout<<"IF"<<endl;
-                    checkBrackets(numberLine);
+                    checkBrackets(numberLine, variableToSearch);
                 }  
                 else if(lineAnalyzed.find("else") != std::string::npos)
                 {
-                    //cout<<"ELSE"<<endl;
-                    checkBrackets(numberLine);
+                    checkBrackets(numberLine, variableToSearch);
                 }
                 else if(regex_search(lineAnalyzed, matches, regWhile))
                 {
-                    lineAnalyzed = lineAnalyzed.substr(lineAnalyzed.find_first_not_of(' '), lineAnalyzed.length()-1);
+                    lineAnalyzed = lineAnalyzed.substr((lineAnalyzed.find_first_not_of(' ')||lineAnalyzed.find_first_not_of('\t')), lineAnalyzed.length()-1);
                     if(lineAnalyzed.at(6)=='(')
                     {
-                        cout<<"MIKE LO TIENE ROTO"<<endl;
-                        cout<<lineAnalyzed.substr(7, lineAnalyzed.length()-2-7)<<endl;
+                        //cout<<"MIKE LO TIENE ROTO"<<endl;
+                        string parenthesisContent = lineAnalyzed.substr(7, lineAnalyzed.length()-2-7);
+                        //cout<<parenthesisContent<<endl;
+                        if(parenthesisContent.substr(((parenthesisContent.find("<=")||parenthesisContent.find(">=")||parenthesisContent.find("!=")||parenthesisContent.find("=="))+2)) != "")
+                        {
+                            variableToSearch = parenthesisContent.substr(((parenthesisContent.find("<=")||parenthesisContent.find(">=")||parenthesisContent.find("!=")||parenthesisContent.find("=="))+2));
+                        }
+                        else
+                        {
+                            variableToSearch = parenthesisContent.substr(((parenthesisContent.find("<")||parenthesisContent.find(">"))+1));
+                        }
+                        //cout<<parenthesisContent.substr(((parenthesisContent.find("<=")||parenthesisContent.find(">=")||parenthesisContent.find("!=")||parenthesisContent.find("=="))+2))<<endl;
+                        //cout<<parenthesisContent.substr(((parenthesisContent.find("<")||parenthesisContent.find(">"))+1))<<endl;
+                        cout<<variableToSearch<<endl;
                     }
-
                     //cout<<"WHILE"<<endl;
-                    checkBrackets(numberLine);
+                    checkBrackets(numberLine, variableToSearch);
                 }  
                 if(lineAnalyzed.find("for") != std::string::npos)
                 {
@@ -189,12 +220,12 @@ class Pruebas
                 //cout<<"|"<< get<0>(i) << setw(10) << get<1>(i) << setw(4)<<endl << get<2>(i) << setw(10)<< get<3>(i)<<"|" <<endl;
                 //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
                 string temp = get<3>(i);
-                temp= SendToPython(temp);
-                cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
-                cout <<get<2>(i)<<" "<<temp<<endl;
+                //temp= SendToPython(temp);
+                //cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
+                //cout <<get<2>(i)<<" "<<temp<<endl;
             }
-            cout<<finalPolunomial<<endl;
-            cout<<SendToPython(finalPolunomial)<<endl;
+            //cout<<finalPolunomial<<endl;
+            //cout<<SendToPython(finalPolunomial)<<endl;
         }
 
         /**
@@ -271,6 +302,22 @@ class Pruebas
             }
             return operationCounter;
         }
+
+        /**
+         * With the help of RegForAux, it concatenates the number of operations found in each
+         * component of any FOR structure (setup; test expression; increment).
+         * 
+         * @param str represents the line of code (FOR) to be analyzed by this method in
+         *      order to obtain its number of Elemental Operations.
+         * 
+         * @note 
+         * @note polynomLineAanalyzed (with a greater scope than any variable inside of this method)
+         *      receives the value of the polynomial created by the three groups of operations in the FOR
+         *      structure
+         * @note RegFor serves more like a concatenator; RegForAux is the method that actually counts
+         *      the number of EO in the code line with this structure.
+         * 
+         */
         void RegFor(string str)
         {
             regex regFor("(for[ ]?\\((.*)\\))");
@@ -312,10 +359,23 @@ class Pruebas
                         tempMultiplicator = "("+forgElements2[1]+"-"+"("+forgElements2[0]+")"+")";
                     }  
                 }
-                //cout<<poly<<endl;
                 polynomLineAanalyzed = poly;
             }
         }
+
+        /**
+         * RegForAux is in charge of identifying and adding the number of Elemental Operations
+         * found in any FOR structure in the piece of code introduced by the user.
+         * 
+         * @param str represents the line of code (FOR) to be analyzed by this method in
+         *      order to obtain its number of Elemental Operations.
+         * 
+         * @note This function divides any FOR structure into three parts (setuo, test exp. and increment)
+         *      as each of these components requiere a different "treatament" in order to get the number
+         *      of OE in each element of the structure
+         * @note RegForAux works alligned with the RegFor method for the correct analysis of FORs.
+         * 
+         */
         void RegForAux(string str)
         {
             string aux="";
@@ -335,8 +395,6 @@ class Pruebas
                     aux = aux.substr(correctBeginning, number);
                     forgElements[arrayCounter] = aux;
 
-                    //cout<<forgElements[arrayCounter]<<endl;
-
                     arrayCounter++;
                     cont=i+1;
                 }
@@ -346,8 +404,20 @@ class Pruebas
             correctBeginning = aux.find_first_not_of(' ');
             aux = aux.substr(correctBeginning, number);
             forgElements[2] = aux;
-            //cout<<forgElements[2]<<endl;
         }
+
+        /**
+         * Methos used to identify the number of time a certain loop structure will be performed;
+         * Lineal, (n/something) or Logharitmic options are possible.
+         * 
+         * @param vect[3] The increment segment of a FOR structure is kept in this parameter to later 
+         *      be concatenated in the finaly polynomial to be printed by this program.
+         * 
+         * @note If a += or -= is found by this method, the FOR structure will be assigned a 1/aux number
+         *      of time to be repated; *= or /= results in a log number of times and ++ or -- in a lineal (n)
+         *      number of times.
+         * 
+         */ 
         void checkTimes(string vect[3])
         {
             string aux="";
@@ -384,12 +454,28 @@ class Pruebas
                 }
             }
         }
-        void checkBrackets(int lineNumber)
+        void checkBrackets(int lineNumber, string searchStr)
         {
             //string vect[6]={value1,value2,value3,value4,value5,value6};
-            int contLI=0, contLC=0, cont=0;
+            int contLI=0;
+            int contLC=0;
+            int cont=0;
             for(int i=lineNumber;i<lines.size();i++)
             {
+                //cout<<searchStr<<endl;
+                //cout<<lines.at(i)<<endl;
+                if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("++")||("--")) != std::string::npos)
+                {
+                    cout<<searchStr + "+1"<<endl;
+                }
+                else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("*=")||("/=")) != std::string::npos)
+                {
+                    cout<<"log"<<endl;
+                }
+                else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("+=")||("-=")) != std::string::npos)
+                {
+                    cout<<"1/n"<<endl;
+                }
                 if(lines.at(i).find("{") != std::string::npos)
                 {
                     contLI++;
@@ -404,7 +490,7 @@ class Pruebas
                     break;
                 }
             }
-            cout<<cont<<endl;
+            //cout<<cont<<endl;
         }
 };
 
