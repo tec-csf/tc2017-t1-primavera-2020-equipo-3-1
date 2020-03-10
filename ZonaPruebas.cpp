@@ -59,9 +59,9 @@ class Pruebas
          */
         void InstallPython()
         {
-           system("sudo apt-get update");
-           system("sudo apt-get install python3-pip3");
-           system("pip install --user sympy");
+            system("sudo apt-get update");
+            system("sudo apt-get install python3-pip");
+            system("pip3 install sympy");
         }
 
         /**
@@ -87,7 +87,7 @@ class Pruebas
             outFile.open("file.txt");
             outFile<<poly<<endl;
             outFile.close();
-            system("python polinomiosimp.py");
+            system("python3 polinomiosimp.py");
             myfile.open ("file.txt");
             if (myfile.is_open())
             {
@@ -143,6 +143,7 @@ class Pruebas
             regex regFor("((.*)?\\})");
             regex regFor2("((.*)?\\{)");
             regex regWhile("(while[ ]?\\((.*)\\))");
+            int correctBegginig = 0;
             while(getline(file, lineAnalyzed))
             {
                 if(lineAnalyzed.find("else if") != std::string::npos)
@@ -175,7 +176,7 @@ class Pruebas
                         }
                         //cout<<parenthesisContent.substr(((parenthesisContent.find("<=")||parenthesisContent.find(">=")||parenthesisContent.find("!=")||parenthesisContent.find("=="))+2))<<endl;
                         //cout<<parenthesisContent.substr(((parenthesisContent.find("<")||parenthesisContent.find(">"))+1))<<endl;
-                        cout<<variableToSearch<<endl;
+                        //cout<<variableToSearch<<endl;
                     }
                     //cout<<"WHILE"<<endl;
                     checkBrackets(numberLine, variableToSearch);
@@ -214,15 +215,20 @@ class Pruebas
                 numberLine++;
             }
             //finalPolunomial = finalPolunomial;
-            //cout<< setw(2)<< "|No. de linea| " << setw(64)<< "|Código|" << setw(45) << "|OE|" << setw(15)<< "|Polinomio|" << endl;
+            //cout<< setw(2)<< "|No. de linea| " << setw(40)<< "|Código|" << setw(45) << "|OE|" << setw(50)<< "|Polinomio|" << endl;
+            cout<<"--------------------------------------------------------------------------------------------------------------------------------"<<endl;
+            cout<< setw(2)<< "|No. de linea| " << setw(49)<< "Código" << setw(40) << "|OE|" << setw(16)<<"Polinomio"<<setw(9)<<"|" << endl; 
+            cout<<"--------------------------------------------------------------------------------------------------------------------------------"<<endl;
             for(const auto & i : info) 
             {
-                //cout<<"|"<< get<0>(i) << setw(10) << get<1>(i) << setw(4)<<endl << get<2>(i) << setw(10)<< get<3>(i)<<"|" <<endl;
-                //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
                 string temp = get<3>(i);
                 temp= SendToPython(temp);
-                cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
-                cout <<get<2>(i)<<" "<<temp<<endl;
+                cout<<"|"<< get<0>(i) << setw(90) << get<1>(i)<< setw(8) <<"|"<< get<2>(i) <<" |"<< setw(24)<< temp<<"|" <<endl;
+                //cout<<"|"<<setw(1)<<get<1>(i)<<setw(50)<<get<2>(i)<<setw(60) << get<3>(i)<< setw(8)<< get<0>(i)<<"|" <<endl;
+                //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
+                
+                //cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
+                //cout <<get<2>(i)<<" "<<temp<<endl;
             }
             //cout<<finalPolunomial<<endl;
             //cout<<SendToPython(finalPolunomial)<<endl;
@@ -512,7 +518,7 @@ class Pruebas
 int main(int argc, char** argv)
 {
     Pruebas<int,string,int,string>P;
-    P.InstallPython();
+    //P.InstallPython();
     P.SaveLinesIntoVector(argv[2]);
     P.ReadFileLineLine(argv[2]);
     return 0;
