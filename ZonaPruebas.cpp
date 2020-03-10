@@ -39,6 +39,7 @@ class Pruebas
         smatch matches;
         vector <tuple<N,C,O,P>> info;
         vector <string> lines;
+        vector <string> variableAssignations;
         string regexOE[9] = {"[\=\+\-\/\*\<\>\!\%]", "[=<>!]=", "[\|\&]{2}", "[+-]{2}", "(print)", "([\[])", "(return)", "(cout)", "(:)"};
         string forgElements[3];
         string forgElements2[3];
@@ -58,7 +59,35 @@ class Pruebas
          *      done so further analysis focused on the if, else and while structures can be done easily.
          * @note The vector in which the line are saved is declared with a global scope inside the class.
          * 
-         */ 
+         */
+
+        void InstallPython()
+        {
+            system("sudo apt-get update");
+            system("sudo apt-get install python3-pip");
+            system("pip3 install sympy");
+        }
+        string SendToPython(string poly)
+        {
+            string line;
+            string aux;
+            ifstream myfile;
+            ofstream outFile;
+            outFile.open("file.txt");
+            outFile<<poly<<endl;
+            outFile.close();
+            system("python3 polinomiosimp.py");
+            myfile.open ("file.txt");
+            if (myfile.is_open())
+            {
+                while (getline(myfile,line) )
+                {
+                    aux=line;
+                }
+            }
+            myfile.close();
+            return aux;
+        }
         void SaveLinesIntoVector(char argv[])
         {
             ifstream reader(argv);
@@ -66,46 +95,70 @@ class Pruebas
             int counter = 0;
             while(getline(reader, lineToBeSaved))
             {
+                if(lineToBeSaved.find("=") != std::string::npos)
+                {
+                    variableAssignations.push_back(lineToBeSaved);
+                }
                 lines.push_back(lineToBeSaved);   
                 counter++;
+            }
+            for(const auto & i : variableAssignations) 
+            {
+                cout<<i<<endl;
             }
         }
         void ReadFileLineLine(char argv[])
         {
             int flag = 0;
             string lineAnalyzed;
+            string lineTableFor;
             ifstream file(argv);
             int numberLine = 1;
             bool Open= false;
             bool Close = false;
             regex regFor("((.*)?\\})");
             regex regFor2("((.*)?\\{)");
+            regex regWhile("(while[ ]?\\((.*)\\))");
             //rege
             while(getline(file, lineAnalyzed))
             {
                 if(lineAnalyzed.find("else if") != std::string::npos)
                 {
-                    cout<<"ELSE IF"<<endl;
+                    //cout<<"ELSE IF"<<endl;
                     checkBrackets(numberLine);
                 }
                 else if(lineAnalyzed.find("if") != std::string::npos)
                 {
-                    cout<<"IF"<<endl;
+                    //cout<<"IF"<<endl;
                     checkBrackets(numberLine);
                 }  
                 else if(lineAnalyzed.find("else") != std::string::npos)
                 {
-                    cout<<"ELSE"<<endl;
+                    //cout<<"ELSE"<<endl;
+                    checkBrackets(numberLine);
+                }
+                else if(regex_search(lineAnalyzed, matches, regWhile))
+                {
+                    lineAnalyzed = lineAnalyzed.substr(lineAnalyzed.find_first_not_of(' '), lineAnalyzed.length()-1);
+                    if(lineAnalyzed.at(6)=='(')
+                    {
+                        cout<<"MIKE LO TIENE ROTO"<<endl;
+                        cout<<lineAnalyzed.substr(7, lineAnalyzed.length()-2-7)<<endl;
+                    }
+
+                    //cout<<"WHILE"<<endl;
                     checkBrackets(numberLine);
                 }  
                 if(lineAnalyzed.find("for") != std::string::npos)
                 {
                     RegFor(lineAnalyzed);
                     polynomLineAanalyzed= polynomLineAanalyzed + "*" + forgElements2[2] + "*";
+                    lineTableFor = forgElements2[0]+ "+" + forgElements2[1]+ "+" +forgElements2[2];
                 }
                 else
                 {
                     polynomLineAanalyzed = to_string(RegOE(lineAnalyzed));
+                    lineTableFor = polynomLineAanalyzed;
                 }
                 if(regex_search(lineAnalyzed, matches, regFor2) && flag==0)
                 {
@@ -114,7 +167,7 @@ class Pruebas
                 }
                 else if(regex_search(lineAnalyzed, matches, regFor2) && flag!=0)
                 {
-                    finalPolunomial = finalPolunomial + "1*(";
+                    finalPolunomial = finalPolunomial + "+1*(";
                 }
                 
                 if(regex_search(lineAnalyzed, matches, regFor))
@@ -126,19 +179,22 @@ class Pruebas
                     finalPolunomial = finalPolunomial + "+" + polynomLineAanalyzed;
                     //cout<<finalPolunomial<<endl;
                 }
-                info.push_back(make_tuple(numberLine,lineAnalyzed,RegOE(lineAnalyzed),polynomLineAanalyzed));
+                info.push_back(make_tuple(numberLine,lineAnalyzed,RegOE(lineAnalyzed),lineTableFor));
                 numberLine++;
             }
-            finalPolunomial = finalPolunomial;
-            //cout<<finalPolunomial<<endl;
+            //finalPolunomial = finalPolunomial;
             //cout<< setw(2)<< "|No. de linea| " << setw(64)<< "|Código|" << setw(45) << "|OE|" << setw(15)<< "|Polinomio|" << endl;
             for(const auto & i : info) 
             {
                 //cout<<"|"<< get<0>(i) << setw(10) << get<1>(i) << setw(4)<<endl << get<2>(i) << setw(10)<< get<3>(i)<<"|" <<endl;
                 //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
-                //cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
-                //cout <<get<2>(i)<<" "<<get<3>(i)<<endl;
+                string temp = get<3>(i);
+                temp= SendToPython(temp);
+                cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
+                cout <<get<2>(i)<<" "<<temp<<endl;
             }
+            cout<<finalPolunomial<<endl;
+            cout<<SendToPython(finalPolunomial)<<endl;
         }
 
         /**
@@ -370,6 +426,7 @@ class Pruebas
 int main(int argc, char** argv)
 {
     Pruebas<int,string,int,string>P;
+    //P.InstallPython();
     P.SaveLinesIntoVector(argv[2]);
     P.ReadFileLineLine(argv[2]);
     return 0;
