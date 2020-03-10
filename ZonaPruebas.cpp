@@ -59,9 +59,9 @@ class Pruebas
          */
         void InstallPython()
         {
-            system("sudo apt-get update");
-            system("sudo apt-get install python3-pip");
-            system("pip3 install --user sympy");
+           system("sudo apt-get update");
+            system("sudo apt-get install python3-pip3");
+            system("pip install --user sympy");
         }
 
         /**
