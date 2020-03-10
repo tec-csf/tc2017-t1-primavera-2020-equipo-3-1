@@ -220,9 +220,9 @@ class Pruebas
                 //cout<<"|"<< get<0>(i) << setw(10) << get<1>(i) << setw(4)<<endl << get<2>(i) << setw(10)<< get<3>(i)<<"|" <<endl;
                 //cout<<"|"<< get<0>(i) << setw(110) << get<1>(i) << setw(10)<<endl << get<2>(i) << setw(15)<< get<3>(i)<<"|" <<endl;
                 string temp = get<3>(i);
-                //temp= SendToPython(temp);
-                //cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
-                //cout <<get<2>(i)<<" "<<temp<<endl;
+                temp= SendToPython(temp);
+                cout <<get<0>(i)<<" "<<get<1>(i)<<endl;
+                cout <<get<2>(i)<<" "<<temp<<endl;
             }
             //cout<<finalPolunomial<<endl;
             //cout<<SendToPython(finalPolunomial)<<endl;
@@ -512,7 +512,7 @@ class Pruebas
 int main(int argc, char** argv)
 {
     Pruebas<int,string,int,string>P;
-    //P.InstallPython();
+    P.InstallPython();
     P.SaveLinesIntoVector(argv[2]);
     P.ReadFileLineLine(argv[2]);
     return 0;
