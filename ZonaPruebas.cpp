@@ -128,7 +128,7 @@ class Pruebas
             }
             for(const auto & i : variableAssignations) 
             {
-                cout<<i<<endl;
+                //cout<<i<<endl;
             }
         }
 
