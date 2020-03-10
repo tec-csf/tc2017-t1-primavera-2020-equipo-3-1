@@ -2,4 +2,4 @@ compiler: gcc
 language: cpp
 script: 
   - g++ ZonaPruebas.cpp -std=c++17 
-  - ./a.out -i /examples/Pruebas.txt
+  - ./a.out -i ../examples/Pruebas.txt
