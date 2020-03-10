@@ -3,5 +3,4 @@ language: cpp
 
 script:
   - g++ ZonaPruebas.cpp -std=c++17
-  - cd examples
-  - ./a.out -i Pruebas.txt
+  - ./a.out -i examples/Pruebas.txt
