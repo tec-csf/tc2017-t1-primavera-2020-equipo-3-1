@@ -61,7 +61,7 @@ class Pruebas
         {
            system("sudo apt-get update");
             system("sudo apt-get install python3-pip3");
-            system("pip install --user sympy");
+            system("pip3 install --user sympy");
         }
 
         /**
@@ -87,7 +87,7 @@ class Pruebas
             outFile.open("file.txt");
             outFile<<poly<<endl;
             outFile.close();
-            system("python3 polinomiosimp.py");
+            system("python polinomiosimp.py");
             myfile.open ("file.txt");
             if (myfile.is_open())
             {
