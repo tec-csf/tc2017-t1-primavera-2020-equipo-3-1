@@ -49,3 +49,5 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 ## 3. Referencias
 
 *[Incluya aquí las referencias a sitios de interés y cualquier otra información que haya utilizado para realizar la actividad y que le puedan ser de utilidad a otras personas que quieran usarlo como referencia]*
+Jan Goyvaerts. (2003). C++ Regular Expressions with std::regex. 2020, de Regular-Expressions.info Sitio web: https://www.regular-expressions.info/stdregex.html
+
