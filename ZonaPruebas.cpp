@@ -32,7 +32,26 @@
 
 using namespace std;
 
-template <class N, class C, class O, class P> 
+/**
+ * Storage for all the information regarding each line of code analyzed by the program
+ * 
+ * @param N Number of line will be kept here.
+ * @param C Line of code in turn will be kept here.
+ * @param O Number of Elemental Operations are kept here.
+ * @param P Polynomial fot the line analyzed is kept here.
+ */
+template <typename N, typename C, typename O, typename P> 
+
+/**
+ * Implementation of the "Pruebas" class to analyze and print the information regarding
+ * a code introduce by the user.
+ * 
+ * Different methods controlling the counter of Elemental Operations, the type of structure
+ * present in the line in turn (for instance, a for) and the printing of the aforementioned
+ * info are present in the class Pruebas. Several libraries used for the mathematical and string
+ * analysis are implemented by the Pruebas class.
+ * 
+ */ 
 class Pruebas
 {
     public:
@@ -61,7 +80,7 @@ class Pruebas
         {
             system("sudo apt-get update");
             system("sudo apt-get install python3-pip");
-            system("pip install --user sympy");
+            system("pip3 install --user sympy");
         }
 
         /**
@@ -87,7 +106,7 @@ class Pruebas
             outFile.open("file.txt");
             outFile<<poly<<endl;
             outFile.close();
-            system("python polinomiosimp.py");
+            system("python3 polinomiosimp.py");
             myfile.open ("file.txt");
             if (myfile.is_open())
             {
@@ -132,6 +151,9 @@ class Pruebas
             }
         }
 
+        /**
+         * 
+         */
         void ReadFileLineLine(char argv[])
         {
             int flag = 0;
@@ -146,19 +168,7 @@ class Pruebas
             int correctBegginig = 0;
             while(getline(file, lineAnalyzed))
             {
-                if(lineAnalyzed.find("else if") != std::string::npos)
-                {
-                    checkBrackets(numberLine, variableToSearch);
-                }
-                else if(lineAnalyzed.find("if") != std::string::npos)
-                {
-                    checkBrackets(numberLine, variableToSearch);
-                }  
-                else if(lineAnalyzed.find("else") != std::string::npos)
-                {
-                    checkBrackets(numberLine, variableToSearch);
-                }
-                else if(regex_search(lineAnalyzed, matches, regWhile))
+                if(regex_search(lineAnalyzed, matches, regWhile))
                 {
                     lineAnalyzed = lineAnalyzed.substr((lineAnalyzed.find_first_not_of(' ')||lineAnalyzed.find_first_not_of('\t')), lineAnalyzed.length()-1);
                     if(lineAnalyzed.at(6)=='(')
@@ -179,7 +189,6 @@ class Pruebas
                         //cout<<variableToSearch<<endl;
                     }
                     //cout<<"WHILE"<<endl;
-                    checkBrackets(numberLine, variableToSearch);
                 }  
                 if(lineAnalyzed.find("for") != std::string::npos)
                 {
@@ -460,44 +469,6 @@ class Pruebas
                     forgElements2[i]=aux;
                 }
             }
-        }
-        void checkBrackets(int lineNumber, string searchStr)
-        {
-            //string vect[6]={value1,value2,value3,value4,value5,value6};
-            int contLI=0;
-            int contLC=0;
-            int cont=0;
-            for(int i=lineNumber;i<lines.size();i++)
-            {
-                //cout<<searchStr<<endl;
-                //cout<<lines.at(i)<<endl;
-                if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("++")||("--")) != std::string::npos)
-                {
-                    //cout<<searchStr + "+1"<<endl;
-                }
-                else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("*=")||("/=")) != std::string::npos)
-                {
-                    //cout<<"log"<<endl;
-                }
-                else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("+=")||("-=")) != std::string::npos)
-                {
-                    //cout<<"1/n"<<endl;
-                }
-                if(lines.at(i).find("{") != std::string::npos)
-                {
-                    contLI++;
-                }
-                else if(lines.at(i).find("}") != std::string::npos)
-                {
-                    contLC++;
-                }
-                cont++;
-                if(contLC==contLI&&(contLC!=0&&contLI!=0))
-                {
-                    break;
-                }
-            }
-            //cout<<cont<<endl;
         }
         string CotaAsin(string value)
         {
