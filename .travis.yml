@@ -3,7 +3,7 @@ language: cpp
 
 script:
   - g++ ZonaPruebas.cpp -std=c++17
-  - cp /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/examples/Pruebas.txt /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/
+  - mv /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/examples/Pruebas.txt /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/
   - ls
   - cat ./Pruebas.txt
   - ./a.out -i /Pruebas.txt
