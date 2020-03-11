@@ -47,17 +47,29 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 *[Incluya aquí una guía paso a paso para poder utilizar la aplicación, desde la clonación del repositorio, la compilación del código hasta la ejecución de los ejemplos para visualizar los resultados.]*
 
 2.	Abrir el compilador Visual Studio Code en su Servidor
+
     a.	Abrir la carpeta clonada “tc2017-t1-primavera-2020-equipo-3-1-master
+    
     b.	Abrir el archivo “ZonaPruebas.cpp”
+    
     c.	Abrir la terminal del Visual Studio Code
+        
         i.	“Ctrl+ñ”
+    
     d.	Identificar el archivo de la carpeta “Examples” que se quiere leer 
+        
         i.	“Prueba.txt ” o “Prueba2.txt”
+    
     e.	Compilar el archivo “ZonaPruebas.cpp”
+        
         i.	“bash”
+        
         ii.	“g++ ZonaPruebas.cpp –o z”
+    
     f.	Compilar con el archivo .txt de su preferencia (paso 1.d)
+        
         i.	“./z –i Prueba.txt” o “./z –i Prueba2.txt”
+    
     g.	Analizar resultados
 
 
