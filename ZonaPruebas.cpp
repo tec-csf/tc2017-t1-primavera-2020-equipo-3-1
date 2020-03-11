@@ -574,7 +574,7 @@ class Pruebas
 int main(int argc, char** argv)
 {
     Pruebas<int,string,int,string>P;
-    //P.InstallPython();
+    P.InstallPython();
     P.SaveLinesIntoVector(argv[2]);
     P.ReadFileLineLine(argv[2]);
     return 0;
