@@ -37,9 +37,21 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 ```
 
 ## 2. Solución
-El programa necesita mostrar 4 valores específicos por cada línea y 2 valores finales que son “polinomio final” y “complejidad del polinomio”, los cuales son; “número de línea”, “código de la línea”, “número de operaciones elementales” y “polinomio por línea”. Los 4 valores específicos son guardados en una “tupla”.
-Al principio el programa tiene que leer línea por línea el documento “.txt” y lo hace mediante el método de “ReadFileLineLine”, para después entrar a una serie de operaciones de “regex” (expresiones regulares) las cuales identifican los componentes de la línea, ya sean “for”, “while”, “if”, “if else”, etc, para sacar la cantidad de operaciones elementales y el “polinomio por línea” según corresponda. Para la parte de “número de línea”, se mete a un ciclo “for” con un incremento de +1 cada que lee una línea de código; el Código de Línea se imprime el arreglo de caracteres de la línea que se está leyendo.
-Para resolver la parte de polemonios se utilizó un “puente” a pyhton con la librería de “sympy” la cual nos ayuda a resolver el polinomio y a reducirlo para que nos dé el “polinomio por línea”, “el polinomio final” ya reducido y finalmente la “Cota asintótica” que nos ayuda a identificar cual es la complejidad del polinomio.
+El programa necesita mostrar 4 valores específicos por cada línea y 2 valores finales que son “polinomio final”
+y “complejidad del polinomio”, los cuales son; “número de línea”, “código de la línea”, “número de operaciones 
+elementales” y “polinomio por línea”. Los 4 valores específicos son guardados en una “tupla”.
+Al principio el programa tiene que leer línea por línea el documento “.txt” y lo hace mediante el método de 
+“ReadFileLineLine”, para después entrar a una serie de operaciones de “regex” (expresiones regulares), 
+estas operaciones sirven para dentificar los “caracteres” ya sea antes o después de cualquier elemento que querramos
+definir, en este caso las identifica mediante la palabra de inicio ya sean “for”, “while”, “if”, “if else”, etc, para 
+sacar la cantidad de operaciones elementales y el “polinomio por línea” según corresponda. Para la parte de 
+“número de línea”, se mete a un ciclo “for” con un incremento de +1 cada que lee una línea de código; en la variable 
+Código de Línea se imprime el "arreglo de caracteres" de la línea que se está leyendo.
+Para resolver la parte de polemonios se utilizó un “puente” a pyhton con la librería de “sympy” la cual nos ayuda a 
+resolver el polinomio y a reducirlo para que nos dé el “polinomio por línea”, “el polinomio final” ya reducido y finalmente 
+la “Cota asintótica” que nos ayuda a identificar cual es la complejidad del polinomio mediante una serie de condiciones.
+Finalmente el programa imprime las 4 valores especificos en dos culumnas y debajo de todas las lineas del código que se leyó,
+se imprime el polinomio final reducido y la complejidad del archivo seleccionado.
 
 
 ### 2.1 Pasos a seguir para utilizar la aplicación
