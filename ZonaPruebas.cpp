@@ -61,7 +61,7 @@ class Pruebas
         {
             system("sudo apt-get update");
             system("sudo apt-get install python3-pip3");
-            system("pip3 install --user sympy");
+            system("pip install --user sympy");
         }
 
         /**
