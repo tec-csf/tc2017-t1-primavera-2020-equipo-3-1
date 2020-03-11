@@ -60,8 +60,8 @@ class Pruebas
         void InstallPython()
         {
             system("sudo apt-get update");
-            system("sudo apt-get install python3-pip3");
-            system("pip install --user sympy");
+            system("sudo apt-get install python3-pip");
+            system("pip3 install --user sympy");
         }
 
         /**
@@ -87,7 +87,7 @@ class Pruebas
             outFile.open("file.txt");
             outFile<<poly<<endl;
             outFile.close();
-            system("python polinomiosimp.py");
+            system("python3 polinomiosimp.py");
             myfile.open ("file.txt");
             if (myfile.is_open())
             {
@@ -211,7 +211,6 @@ class Pruebas
                     finalPolunomial = finalPolunomial + "+" + polynomLineAanalyzed;
                     //cout<<finalPolunomial<<endl;
                 }
-                cout<<lineAnalyzed.find_first_not_of('\t')<<endl;
                 info.push_back(make_tuple(numberLine,lineAnalyzed.substr(lineAnalyzed.find_first_not_of('\t'), lineAnalyzed.size()),RegOE(lineAnalyzed),lineTableFor));
                 numberLine++;
             }
@@ -232,6 +231,7 @@ class Pruebas
                 cout<<"\n"<<endl;
             }
             string fP = SendToPython(finalPolunomial);
+            cout<<fP<<endl;
             cout<<CotaAsin(fP)<<endl;
         }
 
@@ -473,15 +473,15 @@ class Pruebas
                 //cout<<lines.at(i)<<endl;
                 if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("++")||("--")) != std::string::npos)
                 {
-                    cout<<searchStr + "+1"<<endl;
+                    //cout<<searchStr + "+1"<<endl;
                 }
                 else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("*=")||("/=")) != std::string::npos)
                 {
-                    cout<<"log"<<endl;
+                    //cout<<"log"<<endl;
                 }
                 else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("+=")||("-=")) != std::string::npos)
                 {
-                    cout<<"1/n"<<endl;
+                    //cout<<"1/n"<<endl;
                 }
                 if(lines.at(i).find("{") != std::string::npos)
                 {
@@ -536,19 +536,19 @@ class Pruebas
             {
                 cot="log n";
             }
-            else if(aux>logarit)
+            else if(aux>=logarit && (aux!='0' && logarit!='0'))
             {
                 string s(1, aux);
                 cot="n^"+ s;
             }
-            else if(aux<=logarit)
+            else if(aux<=logarit && (aux!='0' && logarit!='0'))
             {
                 string s(1, logarit);
                 cot="n^"+ s+ " log n";
             }
             else if(aux=='0')
             {
-                cot="C";
+                cot="1";
             }
             string FinalPol= regex_replace(Polipot,regw,"log");
             cout<<"Cota Asintotica: O("<<cot<<")"<<endl;
@@ -574,7 +574,7 @@ class Pruebas
 int main(int argc, char** argv)
 {
     Pruebas<int,string,int,string>P;
-    P.InstallPython();
+    //P.InstallPython();
     P.SaveLinesIntoVector(argv[2]);
     P.ReadFileLineLine(argv[2]);
     return 0;
