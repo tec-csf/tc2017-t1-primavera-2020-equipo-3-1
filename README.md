@@ -6,8 +6,6 @@
 1. Esteban Manrique de Lara Sirvent - A01027077 - Campus Santa Fe
 2. Miguel Ángel Hernández Maldonado - A01022398 - Campus Santa Fe
 3. Luis Emilio Alcántara Guzmán - A01027304 - Campus Santa Fe
-4. *[Poner aquí Nombre y Apellidos del integrante 4]* - *[Poner aquí su Matrícula]* - *[Poner aquí su campus]*
-5. *[Poner aquí Nombre y Apellidos del integrante 5]* - *[Poner aquí su Matrícula]* - *[Poner aquí su campus]*
 
 ---
 ## 1. Aspectos generales
@@ -40,11 +38,7 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 
 ## 2. Solución
 
-*[Incluya aquí una explicación de la solución implementada]*
-
 ### 2.1 Pasos a seguir para utilizar la aplicación
-
-*[Incluya aquí una guía paso a paso para poder utilizar la aplicación, desde la clonación del repositorio, la compilación del código hasta la ejecución de los ejemplos para visualizar los resultados.]*
 
 1.	Clonar el repositorio de GitHub
    
@@ -81,7 +75,7 @@ El proyecto debe seguir la siguiente estructura de carpetas:
         i.	“bash”
         ii.	“g++ ZonaPruebas.cpp –o z”
     
-    f.	Compilar con el archivo .txt de su preferencia (paso 1.d)
+    f.	Compilar con el archivo .txt de su preferencia (paso 2.d)
         
         i.	“./z –i Prueba.txt” o “./z –i Prueba2.txt”
     
@@ -90,7 +84,6 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 
 ## 3. Referencias
 
-*[Incluya aquí las referencias a sitios de interés y cualquier otra información que haya utilizado para realizar la actividad y que le puedan ser de utilidad a otras personas que quieran usarlo como referencia]*
 
 Jan Goyvaerts. (2003). C++ Regular Expressions with std::regex. 2020, de Regular-Expressions.info Sitio web: https://www.regular-expressions.info/stdregex.html
 
