@@ -48,17 +48,17 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 
 1.	Clonar el repositorio de GitHub
    
-   a.	Pegar la liga en el navegador
+    a.	Pegar la liga en el navegador
    
         i.	https://github.com/tec-csf/tc2017-t1-primavera-2020-equipo-3-1.git
    
-   b.	Dar Click en el botón verde “Clone or Download”
+    b.	Dar Click en el botón verde “Clone or Download”
         
         i.	Seleccionar “Open in Desktop”
         ii.	Se descagara un archivo .ZIP
         iii.	“tc2017-t1-primavera-2020-equipo-3-1-master.zip”
    
-   c.	Descomprimir el archivo .zip
+    c.	Descomprimir el archivo .zip
         
         i.	Se creara la carpeta “tc2017-t1-primavera-2020-equipo-3-1-master”
         
