@@ -7,5 +7,5 @@ script:
   - ls
   - cat ./Pruebas.txt
   - ./a.out -i ./Pruebas.txt
-  - cat ./file.txt
+  - cat /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/file.txt
 
