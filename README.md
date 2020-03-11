@@ -46,9 +46,25 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 
 *[Incluya aquí una guía paso a paso para poder utilizar la aplicación, desde la clonación del repositorio, la compilación del código hasta la ejecución de los ejemplos para visualizar los resultados.]*
 
+1.	Clonar el repositorio de GitHub
+   
+   a.	Pegar la liga en el navegador
+   
+        i.	https://github.com/tec-csf/tc2017-t1-primavera-2020-equipo-3-1.git
+   
+   b.	Dar Click en el botón verde “Clone or Download”
+        
+        i.	Seleccionar “Open in Desktop”
+        ii.	Se descagara un archivo .ZIP
+        iii.	“tc2017-t1-primavera-2020-equipo-3-1-master.zip”
+   
+   c.	Descomprimir el archivo .zip
+        
+        i.	Se creara la carpeta “tc2017-t1-primavera-2020-equipo-3-1-master”
+        
 2.	Abrir el compilador Visual Studio Code en su Servidor
 
-    a.	Abrir la carpeta clonada “tc2017-t1-primavera-2020-equipo-3-1-master
+    a.	Abrir la carpeta clonada “tc2017-t1-primavera-2020-equipo-3-1-master"
     
     b.	Abrir el archivo “ZonaPruebas.cpp”
     
@@ -63,7 +79,6 @@ El proyecto debe seguir la siguiente estructura de carpetas:
     e.	Compilar el archivo “ZonaPruebas.cpp”
         
         i.	“bash”
-        
         ii.	“g++ ZonaPruebas.cpp –o z”
     
     f.	Compilar con el archivo .txt de su preferencia (paso 1.d)
