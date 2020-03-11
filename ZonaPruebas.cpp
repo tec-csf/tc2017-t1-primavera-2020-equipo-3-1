@@ -12,7 +12,7 @@
  *
  * This program is distributed in the hope that it will help
  * this team to develop its coding habilities and understanding
- * of the Algorithm´s complexity topic. 
+ * of the AlgorithmÂ´s complexity topic. 
  * 
  */
 
@@ -32,7 +32,26 @@
 
 using namespace std;
 
-template <class N, class C, class O, class P> 
+/**
+ * Storage for all the information regarding each line of code analyzed by the program
+ * 
+ * @param N Number of line will be kept here.
+ * @param C Line of code in turn will be kept here.
+ * @param O Number of Elemental Operations are kept here.
+ * @param P Polynomial fot the line analyzed is kept here.
+ */
+template <typename N, typename C, typename O, typename P> 
+
+/**
+ * Implementation of the "Pruebas" class to analyze and print the information regarding
+ * a code introduce by the user.
+ * 
+ * Different methods controlling the counter of Elemental Operations, the type of structure
+ * present in the line in turn (for instance, a for) and the printing of the aforementioned
+ * info are present in the class Pruebas. Several libraries used for the mathematical and string
+ * analysis are implemented by the Pruebas class.
+ * 
+ */ 
 class Pruebas
 {
     public:
@@ -41,11 +60,10 @@ class Pruebas
         vector <string> lines;
         vector <string> variableAssignations;
         string regexOE[9] = {"[\=\+\-\/\*\<\>\!\%]", "[=<>!]=", "[\|\&]{2}", "[+-]{2}", "(print)", "([\[])", "(return)", "(cout)", "(:)"};
-        string forgElements[3];
-        string forgElements2[3];
+        string forgElements[3];  //Used for the OE count in FOR structures
+        string forgElements2[3]; //Used for the complexity polynomial in FOR structures 
         string polynomLineAanalyzed;
         string tempMultiplicator = "";
-        string concatPolynomial = "";
         string finalPolunomial = "";
 
         /**
@@ -60,8 +78,8 @@ class Pruebas
         void InstallPython()
         {
             system("sudo apt-get update");
-            system("sudo apt-get install python3-pip3");
-            system("pip install --user sympy");
+            system("sudo apt-get install python3-pip");
+            system("pip3 install --user sympy");
         }
 
         /**
@@ -82,12 +100,12 @@ class Pruebas
         {
             string line;
             string aux;
-            ifstream myfile;
-            ofstream outFile;
+            ifstream myfile; //File that enters the Python program containing the time polynomial without math manipulation
+            ofstream outFile; // File that exits the Python program with the time polynomial already simplified
             outFile.open("file.txt");
             outFile<<poly<<endl;
             outFile.close();
-            system("python polinomiosimp.py");
+            system("python3 polinomiosimp.py");
             myfile.open ("file.txt");
             if (myfile.is_open())
             {
@@ -126,46 +144,41 @@ class Pruebas
                 lines.push_back(lineToBeSaved);   
                 counter++;
             }
-            for(const auto & i : variableAssignations) 
-            {
-                //cout<<i<<endl;
-            }
         }
 
+        /**
+         * Method that plays the role of the central controller of all the program. In it, diverse
+         * methods and fucntions are called depending on the type of line being analyzed (loops for instance);
+         * countability for the Elemental Operations, printing of the information regarding the complexity and 
+         * invocation of methods to manage the polynomial of the complete code are managed here
+         * 
+         * @param argv is an array of c-string pointers, from which the file (name or path) is extracted
+         *     to be found.
+         * 
+         * @note Due to the way in which the information of each line is saved (vector of tuples with 4 elements),
+         *      the format of our table diverges with the one suggested in the Canvas Task. However, all the requiered
+         *      information for the analysis of the code is presented. 
+         */
         void ReadFileLineLine(char argv[])
         {
             int flag = 0;
             string lineAnalyzed;
-            string lineTableFor;
+            string lineTableFor; //Used for the printing section in this method
             string variableToSearch;
             ifstream file(argv);
             int numberLine = 1;
             regex regFor("((.*)?\\})");
             regex regFor2("((.*)?\\{)");
             regex regWhile("(while[ ]?\\((.*)\\))");
-            int correctBegginig = 0;
+            int correctBegginig = 0; //Variable used for format elements regarding spaces and tabs (\t)
             while(getline(file, lineAnalyzed))
             {
-                if(lineAnalyzed.find("else if") != std::string::npos)
-                {
-                    checkBrackets(numberLine, variableToSearch);
-                }
-                else if(lineAnalyzed.find("if") != std::string::npos)
-                {
-                    checkBrackets(numberLine, variableToSearch);
-                }  
-                else if(lineAnalyzed.find("else") != std::string::npos)
-                {
-                    checkBrackets(numberLine, variableToSearch);
-                }
-                else if(regex_search(lineAnalyzed, matches, regWhile))
+                if(regex_search(lineAnalyzed, matches, regWhile))
                 {
                     lineAnalyzed = lineAnalyzed.substr((lineAnalyzed.find_first_not_of(' ')||lineAnalyzed.find_first_not_of('\t')), lineAnalyzed.length()-1);
                     if(lineAnalyzed.at(6)=='(')
                     {
-                        //cout<<"MIKE LO TIENE ROTO"<<endl;
                         string parenthesisContent = lineAnalyzed.substr(7, lineAnalyzed.length()-2-7);
-                        //cout<<parenthesisContent<<endl;
                         if(parenthesisContent.substr(((parenthesisContent.find("<=")||parenthesisContent.find(">=")||parenthesisContent.find("!=")||parenthesisContent.find("=="))+2)) != "")
                         {
                             variableToSearch = parenthesisContent.substr(((parenthesisContent.find("<=")||parenthesisContent.find(">=")||parenthesisContent.find("!=")||parenthesisContent.find("=="))+2));
@@ -174,12 +187,7 @@ class Pruebas
                         {
                             variableToSearch = parenthesisContent.substr(((parenthesisContent.find("<")||parenthesisContent.find(">"))+1));
                         }
-                        //cout<<parenthesisContent.substr(((parenthesisContent.find("<=")||parenthesisContent.find(">=")||parenthesisContent.find("!=")||parenthesisContent.find("=="))+2))<<endl;
-                        //cout<<parenthesisContent.substr(((parenthesisContent.find("<")||parenthesisContent.find(">"))+1))<<endl;
-                        //cout<<variableToSearch<<endl;
                     }
-                    //cout<<"WHILE"<<endl;
-                    checkBrackets(numberLine, variableToSearch);
                 }  
                 if(lineAnalyzed.find("for") != std::string::npos)
                 {
@@ -209,7 +217,6 @@ class Pruebas
                 else
                 {
                     finalPolunomial = finalPolunomial + "+" + polynomLineAanalyzed;
-                    //cout<<finalPolunomial<<endl;
                 }
                 info.push_back(make_tuple(numberLine,lineAnalyzed.substr(lineAnalyzed.find_first_not_of('\t'), lineAnalyzed.size()),RegOE(lineAnalyzed),lineTableFor));
                 numberLine++;
@@ -232,7 +239,7 @@ class Pruebas
             }
             string fP = SendToPython(finalPolunomial);
             cout<<fP<<endl;
-            cout<<CotaAsin(fP)<<endl;
+            CotaAsin(fP);
         }
 
         /**
@@ -390,8 +397,8 @@ class Pruebas
             
             int cont=4;
             int number;
-            int correctBeginning;
-            int correctEnding;
+            int correctBeginning; //Used for formatting purposes
+            int correctEnding; //Used for formatting purposes
             for(int i=4;i<str.length();i++)
             {
                 if(str.at(i)==';')
@@ -461,45 +468,23 @@ class Pruebas
                 }
             }
         }
-        void checkBrackets(int lineNumber, string searchStr)
-        {
-            //string vect[6]={value1,value2,value3,value4,value5,value6};
-            int contLI=0;
-            int contLC=0;
-            int cont=0;
-            for(int i=lineNumber;i<lines.size();i++)
-            {
-                //cout<<searchStr<<endl;
-                //cout<<lines.at(i)<<endl;
-                if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("++")||("--")) != std::string::npos)
-                {
-                    //cout<<searchStr + "+1"<<endl;
-                }
-                else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("*=")||("/=")) != std::string::npos)
-                {
-                    //cout<<"log"<<endl;
-                }
-                else if(lines.at(i).find(searchStr) != std::string::npos && lines.at(i).find(("+=")||("-=")) != std::string::npos)
-                {
-                    //cout<<"1/n"<<endl;
-                }
-                if(lines.at(i).find("{") != std::string::npos)
-                {
-                    contLI++;
-                }
-                else if(lines.at(i).find("}") != std::string::npos)
-                {
-                    contLC++;
-                }
-                cont++;
-                if(contLC==contLI&&(contLC!=0&&contLI!=0))
-                {
-                    break;
-                }
-            }
-            //cout<<cont<<endl;
-        }
-        string CotaAsin(string value)
+
+        /**
+         * Depending on the strinf (not simplified polynomial) received by the method,
+         * it will return a simplified polynomial for the complexity of the entire code and
+         * also the Big O Notation.
+         * 
+         * @param value is a strig that represents the complexity polynomial for the entire
+         *      code without any mathemathical manipulation yet.
+         * 
+         * @return "Polinomio del codigo analizado: T(n) = " + FinalPol indicates the Polynomial
+         *      complexity of the code analyzed.
+         * 
+         * @note CotaAsin also prints the Big O Notation for the code analyzed as meentioned 
+         *      before in this comment section.
+         * 
+         */
+        void CotaAsin(string value)
         {
             int cont=0;
             smatch matches;
@@ -507,7 +492,7 @@ class Pruebas
             string cot="";
             int band=0;
             regex regw("(w)");
-            regex regPot("([\\*]\\*)");
+            regex regPot(("([\\]*\\)")); 
             string Polipot = regex_replace(value,regPot,"^");
             cout<<Polipot<<endl;
             for(int i=0;i<Polipot.length();i++)
@@ -516,11 +501,11 @@ class Pruebas
                 {
                     if(Polipot.at(i+1)=='^')
                     {
-                        if(Polipot.at(i+2)>=aux)
-                        {
+                    if(Polipot.at(i+2)>=aux)
+                    {
                         aux=Polipot.at(i+2);
-                        }
-                        i=i+1;
+                    }
+                    i=i+2;
                     }
                     else if(Polipot.at(i+1)!='^')
                     {
@@ -540,7 +525,7 @@ class Pruebas
             {
                 cot="log n";
             }
-            else if(aux>=logarit )
+            else if(aux>=logarit)
             {
                 string s(1, aux);
                 cot="n^"+ s;
@@ -556,7 +541,7 @@ class Pruebas
             }
             string FinalPol= regex_replace(Polipot,regw,"log n ");
             cout<<"Cota Asintotica: O("<<cot<<")"<<endl;
-            return "Polinomio del codigo analizado: T(n) = " + FinalPol;   
+            //return "Polinomio del codigo analizado: T(n) = " + FinalPol;   
         }
 };
 
@@ -574,6 +559,7 @@ class Pruebas
  * 
  * @note This method also prints the Polynomial Time Complexity of the file previously
  * analyzed as well as the worst case Big O notation.
+ * 
  */
 int main(int argc, char** argv)
 {
