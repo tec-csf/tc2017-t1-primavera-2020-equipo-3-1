@@ -87,7 +87,7 @@ class Pruebas
             outFile.open("file.txt");
             outFile<<poly<<endl;
             outFile.close();
-            system("python3 polinomiosimp.py");
+            system("python polinomiosimp.py");
             myfile.open ("file.txt");
             if (myfile.is_open())
             {
