@@ -46,8 +46,26 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 
 *[Incluya aquí una guía paso a paso para poder utilizar la aplicación, desde la clonación del repositorio, la compilación del código hasta la ejecución de los ejemplos para visualizar los resultados.]*
 
+2.	Abrir el compilador Visual Studio Code en su Servidor
+    a.	Abrir la carpeta clonada “tc2017-t1-primavera-2020-equipo-3-1-master
+    b.	Abrir el archivo “ZonaPruebas.cpp”
+    c.	Abrir la terminal del Visual Studio Code
+        i.	“Ctrl+ñ”
+    d.	Identificar el archivo de la carpeta “Examples” que se quiere leer 
+        i.	“Prueba.txt ” o “Prueba2.txt”
+    e.	Compilar el archivo “ZonaPruebas.cpp”
+        i.	“bash”
+        ii.	“g++ ZonaPruebas.cpp –o z”
+    f.	Compilar con el archivo .txt de su preferencia (paso 1.d)
+        i.	“./z –i Prueba.txt” o “./z –i Prueba2.txt”
+    g.	Analizar resultados
+
+
 ## 3. Referencias
 
 *[Incluya aquí las referencias a sitios de interés y cualquier otra información que haya utilizado para realizar la actividad y que le puedan ser de utilidad a otras personas que quieran usarlo como referencia]*
+
 Jan Goyvaerts. (2003). C++ Regular Expressions with std::regex. 2020, de Regular-Expressions.info Sitio web: https://www.regular-expressions.info/stdregex.html
+
+geeksforgeeks. (2016). Tuples in C++. 2020, de GeeksforGeeks.org Sitio web: https://www.geeksforgeeks.org/tuples-in-c/
 
