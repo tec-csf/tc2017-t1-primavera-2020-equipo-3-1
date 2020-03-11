@@ -3,9 +3,6 @@ language: cpp
 
 script:
   - g++ ZonaPruebas.cpp -std=c++17
-  - mv /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/examples/Pruebas.txt /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/Pruebas.txt
-  - ls
-  - cat ./Pruebas.txt
-  - ./a.out -i ./Pruebas.txt
-  - cat /home/travis/build/tec-csf/tc2017-t1-primavera-2020-equipo-3-1/file.txt
+  - ./a.out -i Pruebas.txt
+
 
